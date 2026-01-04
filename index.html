@@ -1,38 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Enable Notifications</title>
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js" async></script>
-  <script>
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId: "58a6ebf1-6c4e-40ef-a4af-4c5dc9cf9d3d",
-        notifyButton: { enable: true }
+    <meta charset="UTF-8">
+    <title>Hello Subscribe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ✅ OneSignal SDK (TON CODE) -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "58a6ebf1-6c4e-40ef-a4af-4c5dc9cf9d3d",
+        });
       });
-    });
-    function subscribeNow() {
-      OneSignal.push(function() {
-        OneSignal.showSlidedownPrompt();
-      });
-    }
-  </script>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; background: #f9f9f9; }
-    h2 { color: #4a148c; }
-    button.subscribe-btn {
-      font-size: 20px; padding: 15px 40px; cursor: pointer;
-      background: linear-gradient(90deg, #8e2de2, #4a00e0);
-      border: none; border-radius: 10px; color: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s;
-    }
-    button.subscribe-btn:hover { transform: scale(1.05); }
-  </style>
+    </script>
+    <!-- ✅ FIN OneSignal -->
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            background: #22c55e;
+            color: #0f172a;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+    </style>
 </head>
+
 <body>
-  <h2>🔔 Enable Notifications</h2>
-  <p>اضغط على الزر للاشتراك في إشعارات الموقع</p>
-  <button class="subscribe-btn" onclick="subscribeNow()">Subscribe Now 🔔</button>
+    <div class="container">
+        <h1>Hello</h1>
+        <button id="subscribeBtn">Subscribe</button>
+    </div>
+
+    <script>
+        document.getElementById("subscribeBtn").addEventListener("click", async function () {
+            if (!window.OneSignal) {
+                alert("OneSignal not loaded yet");
+                return;
+            }
+
+            const permission = await OneSignal.Notifications.permission;
+
+            if (permission === "granted") {
+                alert("Already subscribed ✅");
+            } else {
+                await OneSignal.Notifications.requestPermission();
+            }
+        });
+    </script>
 </body>
 </html>
