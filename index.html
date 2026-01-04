@@ -7,19 +7,22 @@
   <!-- OneSignal SDK -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.js" async></script>
   <script>
-    // تهيئة OneSignal
     window.OneSignal = window.OneSignal || [];
+    let onesignalReady = false; // لتتبع جاهزية OneSignal
+
     OneSignal.push(function() {
       OneSignal.init({
         appId: "58a6ebf1-6c4e-40ef-a4af-4c5dc9cf9d3d",
-        notifyButton: {
-          enable: true // زر الجرس التلقائي أسفل يمين الصفحة
-        },
+        notifyButton: { enable: true },
       });
+      onesignalReady = true; // OneSignal جاهز الآن
     });
 
-    // دالة الزر الكبير وسط الصفحة
     function subscribeNow() {
+      if (!onesignalReady) {
+        alert("Please wait a few seconds, OneSignal is loading...");
+        return;
+      }
       OneSignal.push(function() {
         OneSignal.showSlidedownPrompt(); // يظهر نافذة الاشتراك
       });
@@ -27,29 +30,15 @@
   </script>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 100px;
-      background: #f9f9f9;
-    }
-    h2 {
-      color: #4a148c;
-    }
+    body { font-family: Arial, sans-serif; text-align:center; margin-top:100px; background:#f9f9f9; }
+    h2 { color: #4a148c; }
     button.subscribe-btn {
-      font-size: 20px;
-      padding: 15px 40px;
-      cursor: pointer;
+      font-size: 20px; padding: 15px 40px; cursor:pointer;
       background: linear-gradient(90deg, #8e2de2, #4a00e0);
-      border: none;
-      border-radius: 10px;
-      color: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
+      border: none; border-radius: 10px; color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s;
     }
-    button.subscribe-btn:hover {
-      transform: scale(1.05);
-    }
+    button.subscribe-btn:hover { transform: scale(1.05); }
   </style>
 </head>
 
@@ -59,6 +48,3 @@
   <button class="subscribe-btn" onclick="subscribeNow()">Subscribe Now 🔔</button>
 </body>
 </html>
-
-
-
